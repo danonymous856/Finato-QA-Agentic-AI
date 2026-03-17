@@ -1,0 +1,159 @@
+SQLExecutor path: \\192.168.41.85\ipm\SQLScriptExecuter_Scripts_Audit\
+
+AmplifyHealth log paths to check -
+
+\\192.168.41.83\Logs\FINATO\QuartzServices\AmplifyHealth\QuartzScheduledServices
+\\192.168.41.83\Logs\FINATO\EAIServices\Controller\v40_Contoller_Upgrade
+\\192.168.41.83\Logs\FINATO\EAIServices\Fileserver\v4.0_FileServer_Upgrade
+\\192.168.41.83\Logs\FINATO\EAIServices\Processor\v40_Processor_Upgrade
+
+Amplifyhealth code paths to check -
+
+\\192.168.41.83\Code\Finato\EAIServices\Controller\v4.0_Upgrade
+\\192.168.41.83\Code\Finato\EAIServices\FileServer\v4.0_Upgrade
+\\192.168.41.83\Code\Finato\EAIServices\Processor\v4.0_Processor_Upgrade
+
+File stuck ! procedure to diagnose :-
+├── Check Quartz job log → Did file download from FTP?
+│
+├── Check FileServer log → Did it move file to DropFolder?
+│
+├── Check DB (batch_master / batch_history)
+│     ├── No entry → FileServer issue
+│     ├── Entry but incomplete → Controller issue
+│
+├── Check Controller log for batch ID
+│     ├── TruAI upload failed → API/endpoint
+│     └── Passed → move to Processor
+│
+├── Check Processor log for JSON/Blob failures
+│
+└── Verify Output_JSON and Invalid_Output_JSON folders
+
+
+Where to see if JSON created: 
+'LocalPath'           : '\\\\192.168.41.85\\ipm\\IPMEAI\\AmplifyHealth\\Import\\Local\\',
+'RemotePath'          : '//Incoming//TruAI//',
+'OriginalCopyPath'	  : '\\\\192.168.41.85\\ipm\\IPMEAI\\AmplifyHealth\\Import\\OriginalCopyPath',
+'FileSuccessPath'	  : '\\\\192.168.41.85\\ipm\\IPMEAI\\AmplifyHealth\\Import\\FileSuccessPath',
+'InvoiceCopyPath'	  : '\\\\192.168.41.85\\ipm\\IPMEAI\\AmplifyHealth\\ImportBatches',
+
+Email Templates folder(project specific) : \\192.168.41.85\ipm\IPMImages\IPMV4\AmplifyHealth\EmailTemplates
+
+where to see if PDF gone:
+\\192.168.41.85\ipm\IPMEAI\AmplifyHealth\OriginalCopy\MS\07-12-2025
+
+
+------
+You are a senior QA engineer,
+
+Application: Finato invoice processing webapplication (Amplify Health)
+
+
+Requirement Summary:  
+• Data with last records from 15 days to be go to archive so that the ui loads smothly without any issue.
+
+
+AS IS Process:  
+   No threshold was set that data from last records from 15 days will be archive later
+
+
+To Be/Desired Process:  
+   Now the UI will loda smothly and if a person want s to see the past  records then use a specific login with only the rights of archive_user. these user wont be able to update and data, and just only see it , and no IRN when logged in by these user has to be able to see the submit or save button. or should naot be able to update the line item as well. only read acess.
+Acc to dev the frontend will be done on quick basis but the Backend mean on the DB i have to check on alomst 43 DBs named: its parent and child DBs as well
+
+DBs:•	[ipm-core].[sp_IPM_Get_Entity_GridData]
+•	[ipm-core].[sp_IPM_Get_PlantWiseEntity_GridData_Activity]
+•	[ipm-core].[sp_IPM_Get_EntityFieldsData_TransactionByID]
+•	[ipm-core].[sp_IPM_Get_ActiveEntityFieldDetails_ByPlantId]
+•	[ipm-core].[sp_IPM_Get_Log_Validation]
+•	[ipm-core].[sp_IPM_Get_Entity_PlantWiseGridColumnSettings_Data]
+ 
+
+
+Generate:
+1.positive test cases
+2.negative test cases
+3.boundary test cases
+5. DB coverage test cases
+
+Output format: Test case ID,Test description,Test Data,Expected result,Actual result,Status (Pass/Fail),Comments
+
+<FTPCredential>
+<Username>ipmiquat</Username>
+<Password>8ilGwcMg7328</Password>
+<Host>172.22.254.183</Host>
+<Port>21</Port>
+<Protocol>Ftp</Protocol>
+<SourcePath>\\172.22.254.183\IQ</SourcePath>
+<DestinationPath>/Incoming/DGSL/ADT</DestinationPath>
+<Read_Threshold_In_Minutes>0</Read_Threshold_In_Minutes>
+</FTPCredential>
+
+
+-------DHL
+
+DHL - Vendor portal
+Puser786 - VP add option
+
+1.	Vendor Login : Username - JBA_TPlink_123_1357786, Password - Sysadmin@123   
+2.	Processor Login : Username - puser786, Password - Sysadmin@123
+3.	Verifier Login : Username - sairamr1, Password - Sysadmin@123
+
+file upload is from 
+
+DHL - Central Scan
+SFTP file upload but corresponding details to be filled from the UI, Details filled first thne upload file.
+
+where to look for file upload:LocalPath'           : '\\\\192.168.41.85\\ipm\\IPMEAI\\DHL\\TrackingTool\\LocalFiles',
+            'RemotePath'          : '\\\\192.168.41.85\\ipm\\IPMEAI\\DHL\\TrackingTool\\RemotePath',
+            'ArchivePath'         : '\\\\192.168.41.85\\ipm\\IPMEAI\\DHL\\TrackingTool\\Archive',
+
+SFTP path where to uplaod file: //Datmauat//Incoming//DHL//Input//Scan/<doctype>
+
+locationUser786
+ScanUser786
+
+TruCap login:
+UsrID: Finato.DHL
+password: Sysadmin@123
+
+Note: just after renaming the pdf file to the corresonding URN no, and uploading it on the SFTP path, come to TRUcap for indexing, finato(puser786, in 'invoice processing') from here we need to move to OGP , then scheduler will put it into OGC.
+
+step:
+1.locationuser transacaction save 
+2. Generated URN number , replced the pdf filename with it and uploaded to sftp
+3.moved the transaction to scanning pending
+4. via scanuser login moved it to 'scanned'
+5.trucap indexing
+
+DAPS:
+
+First we need to upload APS_vouncher_no.PDF and a APS_vouncher_no.excel file of the same name.
+
+A unique URN no will be generated.
+
+
+path for .xlsx: \\192.168.41.85\ipm\IPMEAI\DHL\documents\DHL_MasterImportt\APSImport\ExcelImport\Local
+
+path for .pdf: \\192.168.41.85\ipm\IPMEAI\DHL\DropFolder\Scan\FTP_APS
+
+SFTP path: //in//work//UAT//transcation//aps//
+
+it will directly go to trucap. also it will come to FInato as well.
+ 
+
+------ 
+master data, text box ke jagah lookup rahega for only SOA and LOA and TR
+
+1 file import should naot take the 2nd time again.
+
+
+---------
+
+
+
+
+
+
+
