@@ -151,6 +151,7 @@ master data, text box ke jagah lookup rahega for only SOA and LOA and TR
 
 ---------
 
+New changes is that the now while trying to put any S CN file in the SFTP for amplifier health, we need the control code plus the package number so before putting any file, you first need to go to the nato UI create a package number. Detail copy that package number and put it as a prefix to that file control-code.
 
 
 
