@@ -1,0 +1,14 @@
+[
+  {
+    "test_case_id": "TC_001",
+    "title": "Login with valid credentials",
+    "steps": [
+      "Open login page",
+      "Enter valid username",
+      "Enter valid password",
+      "Click login"
+    ],
+    "expected_result": "User should be logged in and redirected to dashboard",
+    "priority": "High"
+  }
+]
